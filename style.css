@@ -1,0 +1,31 @@
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+.material-symbols-outlined {
+	font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+	font-size: 50px;
+}
+
+/* FONT & COLOR */
+body {
+	background-color: #d1e3dd;
+	color: #2e282a;
+	font-family: "Roboto", sans-serif;
+}
+
+/* LAYOUT & MARGIN */
+.container {
+	width: 100%;
+}
+
+.task {
+	border: 1px solid black;
+	border-radius: 10px;
+}
+
+.task_head {
+	display: flex;
+}
