@@ -2,6 +2,9 @@
 *::after,
 *::before {
 	box-sizing: border-box;
+}
+
+:root {
 	font-size: 15px;
 }
 
@@ -12,17 +15,18 @@ body {
 	color: #525f7f;
 	font-family: "Roboto", sans-serif;
 	font-size: 1rem;
+	padding: 1em 1.5em 1.25em;
 
 	h1 {
 		font-size: 1.476rem;
-		margin: 1.5em;
+		margin: 1.5em 0 1.75em;
 		text-align: center;
 	}
 
 	h2 {
 		font-size: 1.383rem;
 		font-weight: 500;
-		margin: 0.25em 0 0.5em 0.25em;
+		margin: 0.25em 0 1em 0.25em;
 	}
 
 	h3 {
@@ -60,8 +64,8 @@ body {
 /* CONTAINER */
 
 .container {
-	margin: 0 auto 8em;
-	max-width: 1000px;
+	margin: 0 auto;
+	max-width: 1078px;
 	width: 100%;
 
 	.task {
@@ -72,10 +76,10 @@ body {
 		border-radius: 5px;
 		display: flex;
 		flex-direction: column;
-		height: auto;
+		height: fit-content;
 		justify-content: space-between;
-		margin-top: 1em;
-		min-height: 250px;
+		margin-top: 2em;
+		min-height: 300px;
 		padding: 0.5em;
 		-webkit-transition: all 0.25s ease-in;
 		-moz-transition: all 0.25s ease-in;
@@ -130,7 +134,7 @@ body {
 }
 
 @media only screen and (min-width: 600px) {
-	* {
+	:root {
 		font-size: 17px;
 	}
 
@@ -143,12 +147,25 @@ body {
 		.task {
 			margin-top: 0;
 			flex: 1 1 calc(50% - 2em);
-			min-width: 35%;
-			/* flex-grow: 500px; */
 		}
 	}
 
 	.add-task {
 		margin-top: auto;
+	}
+}
+
+@media only screen and (min-width: 900px) {
+	:root {
+		font-size: 19px;
+	}
+
+	.container {
+		flex-wrap: wrap;
+
+		.task {
+			flex: 1 1 calc(25% - 2em);
+			min-height: 325px;
+		}
 	}
 }
