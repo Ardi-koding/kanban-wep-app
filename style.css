@@ -4,28 +4,105 @@
 	box-sizing: border-box;
 }
 
-.material-symbols-outlined {
-	font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-	font-size: 50px;
-}
-
-/* FONT & COLOR */
+/* BODY & ELEMENT */
 body {
-	background-color: #d1e3dd;
-	color: #2e282a;
+	background-color: #eef2f9;
+	color: #525f7f;
 	font-family: "Roboto", sans-serif;
+	font-size: 15px;
+
+	h1 {
+		font-size: 1.476rem;
+		margin: 1.5em;
+		text-align: center;
+	}
+
+	h2 {
+		font-size: 1.383rem;
+		font-weight: 500;
+		margin-top: 0.25em;
+	}
+
+	h3 {
+		font-weight: 400;
+		margin-bottom: 0.5em;
+	}
+
+	button {
+		background-color: transparent;
+		border: none;
+		color: inherit;
+		font-size: 1.296rem;
+		font: inherit;
+		height: 40px;
+	}
+
+	button:hover {
+		cursor: pointer;
+	}
 }
 
-/* LAYOUT & MARGIN */
+/* CONTAINER */
+
 .container {
+	margin: 0 auto;
+	max-width: 1000px;
 	width: 100%;
+
+	.task {
+		-webkit-box-shadow: 0px 1px 5px 0px rgba(128, 128, 128, 0.75);
+		-moz-box-shadow: 0px 1px 5px 0px rgba(128, 128, 128, 0.75);
+		box-shadow: 0px 1px 5px 0px rgba(128, 128, 128, 0.75);
+		border-radius: 5px;
+		display: flex;
+		flex-direction: column;
+		height: auto;
+		justify-content: space-between;
+		margin-top: 1em;
+		min-height: 250px;
+		padding: 0.5em;
+
+		.task_list {
+			-webkit-box-shadow: 0px 1px 5px 0px rgba(128, 128, 128, 0.75);
+			-moz-box-shadow: 0px 1px 5px 0px rgba(128, 128, 128, 0.75);
+			box-shadow: 0px 1px 5px 0px rgba(128, 128, 128, 0.75);
+			background-color: #f6f8fc;
+			border-radius: 10px;
+			margin: 0 auto;
+			padding: 0.75em;
+			width: 95%;
+			margin-bottom: 1.5em;
+		}
+	}
+
+	.task:nth-child(1) {
+		margin-top: 0;
+	}
 }
 
-.task {
-	border: 1px solid black;
-	border-radius: 10px;
+/* COMPONENT */
+
+.to-do {
+	border-top: 8px solid #89bd9e;
 }
 
-.task_head {
-	display: flex;
+.in-progress {
+	border-top: 8px solid #af5b5b;
+}
+
+.review {
+	border-top: 8px solid #7fd1b9;
+}
+.done {
+	border-top: 8px solid #f0c987;
+}
+
+.select-priority {
+	font-size: 13px;
+	padding: 0.25em 0.5em;
+	text-align: center;
+}
+
+.add-task {
+	text-align: center;
 }

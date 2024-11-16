@@ -4,10 +4,6 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Kanban Web App</title>
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=more_vert,settings&display=block"
-		/>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -21,28 +17,55 @@
 		<h1>KANBAN BOARD</h1>
 		<div class="container">
 			<section class="task to-do">
-				<div class="task_head">
-					<h2>To do</h2>
-					<span class="material-symbols-outlined"> more_vert </span>
+				<h2>To do</h2>
+				<div class="task_list">
+					<select class="select-priority" name="priority" id="priority">
+						<option value="low">Low Priority</option>
+						<option value="medium">Medium Priority</option>
+						<option value="high">High Priority</option>
+					</select>
+					<h3>Main mobile legend</h3>
 				</div>
+				<span class="add-task"><button type="button">Add task +</button></span>
 			</section>
+
 			<section class="task in-progress">
-				<div class="task_head">
-					<h2>In progress</h2>
-					<span class="material-symbols-outlined"> more_vert </span>
+				<h2>In progress</h2>
+				<div class="task_list">
+					<select class="select-priority" name="priority" id="priority">
+						<option value="low">Low Priority</option>
+						<option value="medium">Medium Priority</option>
+						<option value="high">High Priority</option>
+					</select>
+					<h3>Main mobile legend</h3>
 				</div>
+				<span class="add-task"><button type="button">Add task +</button></span>
 			</section>
+
 			<section class="task review">
-				<div class="task_head">
-					<h2>Review</h2>
-					<span class="material-symbols-outlined"> more_vert </span>
+				<h2>Review</h2>
+				<div class="task_list">
+					<select class="select-priority" name="priority" id="priority">
+						<option value="low">Low Priority</option>
+						<option value="medium">Medium Priority</option>
+						<option value="high">High Priority</option>
+					</select>
+					<h3>Main mobile legend</h3>
 				</div>
+				<span class="add-task"><button type="button">Add task +</button></span>
 			</section>
+
 			<section class="task done">
-				<div class="task_head">
-					<h2>Done</h2>
-					<span class="material-symbols-outlined"> more_vert </span>
+				<h2>Done</h2>
+				<div class="task_list">
+					<select name="priority" id="priority">
+						<option value="low">Low Priority</option>
+						<option value="medium">Medium Priority</option>
+						<option value="high">High Priority</option>
+					</select>
+					<h3>Main mobile legend</h3>
 				</div>
+				<span><button type="button">Add task +</button></span>
 			</section>
 		</div>
 	</body>
