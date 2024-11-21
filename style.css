@@ -129,6 +129,21 @@ body {
 	text-align: center;
 }
 
+.low-priority {
+	background-color: blue;
+	color: white;
+}
+
+.medium-priority {
+	background-color: wheat;
+	color: white;
+}
+
+.high-priority {
+	background-color: red;
+	color: white;
+}
+
 .add-task {
 	text-align: center;
 }
