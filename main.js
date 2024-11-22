@@ -7,16 +7,6 @@ buttons.forEach((element) => {
 	});
 });
 
-// priority = document.querySelectorAll(".select-priority");
-// priority.forEach((element) => {
-// 	if (element.value == "low") {
-// 		element.style.backgroundColor = "red";
-// 	}
-
-// 	if (element.value == "medium") {
-// 		element.style.backgroundColor = "blue";
-// 	}
-// });
 
 $(document).ready(function () {
 	$(".select-priority").each(function () {
