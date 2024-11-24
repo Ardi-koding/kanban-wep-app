@@ -23,7 +23,7 @@
 		<div class="container">
 			<section class="task to-do">
 				<h2>To do</h2>
-				<div class="task_list">
+				<div class="task_list to-do_1">
 					<select
 						class="select-priority"
 						name="priority"
@@ -35,14 +35,17 @@
 					</select>
 					<h3>Main mobile legend</h3>
 				</div>
+
 				<span class="add-task"
-					><button type="button">Add task +</button></span
-				>
+					><button type="button" class="add-button" value="td">
+						Add task
+					</button>
+				</span>
 			</section>
 
 			<section class="task in-progress">
 				<h2>In progress</h2>
-				<div class="task_list">
+				<div class="task_list in-progress_1">
 					<select
 						class="select-priority"
 						name="priority"
@@ -55,13 +58,15 @@
 					<h3>Ketemu pasien</h3>
 				</div>
 				<span class="add-task"
-					><button type="button">Add task +</button></span
+					><button type="button" class="add-button" value="ip">
+						Add task
+					</button></span
 				>
 			</section>
 
 			<section class="task review">
 				<h2>Review</h2>
-				<div class="task_list">
+				<div class="task_list review_1">
 					<select
 						class="select-priority"
 						name="priority"
@@ -74,13 +79,15 @@
 					<h3>Beli stock ayam</h3>
 				</div>
 				<span class="add-task"
-					><button type="button">Add task +</button></span
+					><button type="button" class="add-button" value="revi">
+						Add task
+					</button></span
 				>
 			</section>
 
 			<section class="task done">
 				<h2>Done</h2>
-				<div class="task_list">
+				<div class="task_list done_1">
 					<select
 						class="select-priority"
 						name="priority"
@@ -93,33 +100,11 @@
 					<h3>big billy cat</h3>
 				</div>
 				<span class="add-task"
-					><button type="button">Add task +</button></span
+					><button type="button" class="add-button" value="don">
+						Add task
+					</button></span
 				>
 			</section>
-
-			<div class="modal">
-				<h2>What is Your Task ?</h2>
-				<form class="modal-form" action="">
-					<textarea
-						name="modal-textarea"
-						id="modal-textarea"
-						placeholder="your task here"
-					></textarea>
-					<br />
-					<select
-						class="select-priority"
-						name="priority"
-						id="priority"
-					>
-						<option value="low">Low Priority</option>
-						<option value="medium">Medium Priority</option>
-						<option value="high">High Priority</option>
-					</select>
-					<br />
-					<button type="button" class="modal-button">Confirm</button>
-					<button type="button" class="modal-button">Cancel</button>
-				</form>
-			</div>
 		</div>
 	</body>
 </html>
