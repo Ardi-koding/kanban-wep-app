@@ -22,37 +22,7 @@ $(document).ready(function () {
 	}
 	checkPriority();
 
-	function whichSection(val, dataLength, newTask) {
-		switch (val) {
-			case "to-do":
-				let attributeT = val + "-" + dataLength;
-				console.log(attributeT);
-				let attributeT2 = val + "-" + (dataLength + 1);
-				newTask.attr("data-list", attributeT2);
-				let selector = `[data-list="${attributeT}"]`;
-				$(selector).after(newTask);
-				break;
-			case "in-progress":
-				let attributeI = val + "-" + (dataLength + 1);
-				newTask.attr("data-list", attributeI);
-				$(attributeI).after(newTask);
-				break;
-			case "review":
-				let attributeR = val + "-" + (dataLength + 1);
-				newTask.attr("data-list", attributeR);
-				$(attributeR).after(newTask);
-				break;
-			case "done":
-				let attributeD = val + "-" + (dataLength + 1);
-				newTask.attr("data-list", attributeD);
-				$(attributeD).after(newTask);
-				break;
-			default:
-				break;
-		}
-	}
-
-	function createTask(whichSection, namaClass, dataListElement) {
+	function newBox(newAttribute, selector) {
 		let taskList = $("<div></div>");
 		taskList.addClass("task_list");
 
@@ -85,15 +55,51 @@ $(document).ready(function () {
 		buttonGroup.append(confirm, cancel);
 
 		taskList.append(priority, inlineInput, buttonGroup);
+		taskList.attr("data-list", newAttribute);
 
-		whichSection(namaClass, dataListElement, taskList);
-		checkPriority();
+		$(selector).after(taskList);
+	}
+
+	function whichTask(namaClass, dataLength, newBox) {
+		switch (namaClass) {
+			case "to-do":
+				let to_do = namaClass + "-" + dataLength;
+				let to_do_selector = `[data-list="${to_do}"]`;
+				let to_do_next = namaClass + "-" + (dataLength + 1);
+				newBox(to_do_next, to_do_selector);
+				break;
+
+			case "in-progress":
+				let in_progress = namaClass + "-" + dataLength;
+				let in_progress_selector = `[data-list="${in_progress}"]`;
+				let in_progress_next = namaClass + "-" + (dataLength + 1);
+				newBox(in_progress_next, in_progress_selector);
+				break;
+
+			case "review":
+				let review = namaClass + "-" + dataLength;
+				let review_selector = `[data-list="${review}"]`;
+				let review_next = namaClass + "-" + (dataLength + 1);
+				newBox(review_next, review_selector);
+				break;
+
+			case "done":
+				let done = namaClass + "-" + dataLength;
+				let done_selector = `[data-list="${done}"]`;
+				let done_next = namaClass + "-" + (dataLength + 1);
+				newBox(done_next, done_selector);
+				break;
+
+			default:
+				break;
+		}
 	}
 
 	$(".add-task").on("click", function () {
 		let namaClass = $(this).parent().attr("class").slice("5");
 		let parent = $(this).parent();
-		let dataListElement = Number(parent.children("[data-list]").length);
-		createTask(whichSection, namaClass, dataListElement);
+		let dataLength = Number(parent.children("[data-list]").length);
+		whichTask(namaClass, dataLength, newBox);
+		checkPriority();
 	});
 });
