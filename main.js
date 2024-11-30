@@ -43,7 +43,7 @@ $(document).ready(function () {
 		let inlineInput = $("<input></input>")
 			.attr("placeholder", "Insert your task")
 			.attr("type", "text")
-			.attr("required", true);
+			.prop("required", true);
 		inlineInput.addClass("inline-input");
 
 		let buttonGroup = $("<div></div>").addClass("add-task");
@@ -96,6 +96,32 @@ $(document).ready(function () {
 				);
 				$(document).off("click.outside");
 			});
+		});
+
+		taskList.find(".btn-confirm").on("click", function () {
+			if (inlineInput.val() === "") {
+				alert("insert your task before confirming!");
+				inlineInput.focus();
+			} else {
+				let $h3 = $("<h3></h3>");
+				$h3.text(inlineInput.val());
+				inlineInput.remove();
+				$(".btn-confirm").remove();
+				$(".btn-cancel").remove();
+
+				taskList.find(".select-priority").after($h3);
+
+				$(".add-button").prop("disabled", false);
+				$(".add-button").hover(
+					function () {
+						$(this).css("cursor", "pointer");
+					},
+					function () {
+						$(this).css("cursor", "default");
+					}
+				);
+				$(document).off("click.outside");
+			}
 		});
 	}
 
