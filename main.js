@@ -108,7 +108,7 @@ $(document).ready(function () {
 		newBox($nextAttribute, $selector);
 	}
 
-	$(".add-task").on("click", function (event) {
+	$(".add-button").on("click", function (event) {
 		let namaClass = $(this).parent().attr("class").split(" ")[1];
 		let parent = $(this).parent();
 		let dataLength = Number(parent.children("[data-list]").length);

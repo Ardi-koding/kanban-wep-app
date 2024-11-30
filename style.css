@@ -86,9 +86,8 @@ body {
 
 /* BUTTON */
 
-.add-task {
-	text-align: center;
-	margin-top: auto;
+.add-button {
+	margin: auto auto 0;
 }
 
 .add-button,
@@ -203,7 +202,7 @@ body {
 		}
 	}
 
-	.add-task {
+	.add-button {
 		margin-top: auto;
 	}
 }
