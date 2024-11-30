@@ -88,15 +88,20 @@ body {
 
 .add-task {
 	text-align: center;
+	margin-top: auto;
 }
 
 .add-button,
+.btn-confirm,
+.btn-cancel,
 .select-priority {
 	font-family: "Roboto", sans-serif;
 	font-size: 1rem;
 }
 
-.add-button {
+.add-button,
+.btn-confirm,
+.btn-cancel {
 	background-color: transparent;
 	border: none;
 	border-radius: 10px;
@@ -111,19 +116,24 @@ body {
 	transition: background-color 0.25s ease-in;
 }
 
-.add-button:hover {
+.add-button:hover,
+.btn-confirm:hover,
+.btn-cancel:hover {
 	cursor: pointer;
 	background-color: hsla(0, 0%, 78%, 0.752);
 	border-radius: 10px;
 }
 
-.add-button:active {
+.add-button:active,
+.btn-confirm:active,
+.btn-cancel:active {
 	color: red;
 }
 
 /* INLINE FORM */
 .inline-input {
 	border-radius: 5px;
+	border: 1px solid #525f7f;
 	font-size: 0.867rem;
 	width: 95%;
 	padding: 0.25em;
@@ -183,6 +193,7 @@ body {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		align-items: flex-start;
 		flex-wrap: wrap;
 		gap: 2em;
 

@@ -14,8 +14,9 @@ $(document).ready(function () {
 			}
 
 			$(this).on("change", function () {
-				let className = $(this).attr("class");
-				$(this).removeClass(className.slice("16"));
+				$(this).removeClass(
+					"low-priority medium-priority high-priority"
+				);
 				$(this).addClass($(this).val() + "-priority");
 			});
 		});
@@ -25,6 +26,7 @@ $(document).ready(function () {
 	function newBox(newAttribute, selector) {
 		let taskList = $("<div></div>");
 		taskList.addClass("task_list");
+		taskList.css("display", "none");
 
 		let priority = $("<select></select>");
 		priority.addClass("select-priority");
@@ -40,66 +42,78 @@ $(document).ready(function () {
 
 		let inlineInput = $("<input></input>")
 			.attr("placeholder", "Insert your task")
-			.attr("type", "text");
+			.attr("type", "text")
+			.attr("required", true);
 		inlineInput.addClass("inline-input");
 
 		let buttonGroup = $("<div></div>").addClass("add-task");
 		let confirm = $("<button></button")
 			.text("Confirm")
 			.attr("type", "button")
-			.addClass("add-button");
+			.addClass("btn-confirm");
 		let cancel = $("<button></button>")
 			.text("Cancel")
 			.attr("type", "button")
-			.addClass("add-button");
+			.addClass("btn-cancel ");
 		buttonGroup.append(confirm, cancel);
 
 		taskList.append(priority, inlineInput, buttonGroup);
 		taskList.attr("data-list", newAttribute);
 
 		$(selector).after(taskList);
+		taskList.fadeIn(500);
+
+		inlineInput.focus();
+
+		$(".add-button").prop("disabled", true);
+		$(".add-button").css("cursor", "not-allowed");
+		// Cegah interaksi di luar kotak
+		lockFocus(taskList, inlineInput);
+	}
+
+	function lockFocus(taskList, inlineInput) {
+		function outsideClick(event) {
+			if (!taskList[0].contains(event.target)) {
+				alert("Insert task first!");
+				inlineInput.focus();
+				event.preventDefault();
+			}
+		}
+
+		$(document).on("click.outside", outsideClick);
+
+		taskList.find(".btn-cancel").on("click", function () {
+			taskList.fadeOut(300, function () {
+				$(this).remove();
+				$(".add-button").prop("disabled", false);
+				$(".add-button").hover(
+					function () {
+						$(this).css("cursor", "pointer");
+					},
+					function () {
+						$(this).css("cursor", "default");
+					}
+				);
+				$(document).off("click.outside");
+			});
+		});
 	}
 
 	function whichTask(namaClass, dataLength, newBox) {
-		switch (namaClass) {
-			case "to-do":
-				let to_do = namaClass + "-" + dataLength;
-				let to_do_selector = `[data-list="${to_do}"]`;
-				let to_do_next = namaClass + "-" + (dataLength + 1);
-				newBox(to_do_next, to_do_selector);
-				break;
-
-			case "in-progress":
-				let in_progress = namaClass + "-" + dataLength;
-				let in_progress_selector = `[data-list="${in_progress}"]`;
-				let in_progress_next = namaClass + "-" + (dataLength + 1);
-				newBox(in_progress_next, in_progress_selector);
-				break;
-
-			case "review":
-				let review = namaClass + "-" + dataLength;
-				let review_selector = `[data-list="${review}"]`;
-				let review_next = namaClass + "-" + (dataLength + 1);
-				newBox(review_next, review_selector);
-				break;
-
-			case "done":
-				let done = namaClass + "-" + dataLength;
-				let done_selector = `[data-list="${done}"]`;
-				let done_next = namaClass + "-" + (dataLength + 1);
-				newBox(done_next, done_selector);
-				break;
-
-			default:
-				break;
-		}
+		let $nextAttribute = namaClass + "-" + (dataLength + 1);
+		let $selector =
+			dataLength === 0
+				? $(`.${namaClass} > h2`)
+				: `[data-list="${namaClass}-${dataLength}"]`;
+		newBox($nextAttribute, $selector);
 	}
 
-	$(".add-task").on("click", function () {
-		let namaClass = $(this).parent().attr("class").slice("5");
+	$(".add-task").on("click", function (event) {
+		let namaClass = $(this).parent().attr("class").split(" ")[1];
 		let parent = $(this).parent();
 		let dataLength = Number(parent.children("[data-list]").length);
 		whichTask(namaClass, dataLength, newBox);
+		event.stopPropagation();
 		checkPriority();
 	});
 });
