@@ -28,6 +28,11 @@ $(document).ready(function () {
 		taskList.addClass("task_list");
 		taskList.css("display", "none");
 
+		// * task head
+		let taskHead = $("<div></div>");
+		taskHead.addClass("task__head");
+
+		// priority
 		let priority = $("<select></select>");
 		priority.addClass("select-priority");
 
@@ -40,6 +45,36 @@ $(document).ready(function () {
 			.val("high");
 		priority.append(lowValue, mediumValue, highValue);
 
+		// three dot container
+		let three_dot_container = $("<div></div>");
+		three_dot_container.addClass("three-dot-container");
+
+		// > three_dot_icon
+		let three_dot_icon = $("<button></button>");
+		three_dot_icon.addClass("three-dot-icon");
+
+		let material_symbols_outlined = $("<span></span>");
+		material_symbols_outlined
+			.addClass("material-symbols-outlined")
+			.text("more_vert");
+
+		// > edit_and_delete
+		let edit_and_delete = $("<div></div>");
+		edit_and_delete.addClass("edit-and-delete hidden");
+
+		let edit_btn = $("<button></button>");
+		edit_btn.addClass("edit-btn").text("Edit");
+		let delete_btn = $("<button></button>");
+		delete_btn.addClass("delete-btn").text("Delete");
+
+		// >> append
+		three_dot_icon.append(material_symbols_outlined);
+		edit_and_delete.append(edit_btn, delete_btn);
+		three_dot_container.append(three_dot_icon, edit_and_delete);
+
+		taskHead.append(priority, three_dot_container);
+
+		// inline input
 		let inlineInput = $("<input></input>")
 			.attr("placeholder", "Insert your task")
 			.attr("type", "text")
@@ -57,7 +92,7 @@ $(document).ready(function () {
 			.addClass("btn-cancel ");
 		buttonGroup.append(confirm, cancel);
 
-		taskList.append(priority, inlineInput, buttonGroup);
+		taskList.append(taskHead, inlineInput, buttonGroup);
 		taskList.attr("data-list", newAttribute);
 
 		$(selector).after(taskList);
@@ -68,10 +103,10 @@ $(document).ready(function () {
 		$(".add-button").prop("disabled", true);
 		$(".add-button").css("cursor", "not-allowed");
 		// Cegah interaksi di luar kotak
-		lockFocus(taskList, inlineInput);
+		lockFocus(taskList, inlineInput, buttonGroup);
 	}
 
-	function lockFocus(taskList, inlineInput) {
+	function lockFocus(taskList, inlineInput, buttonGroup) {
 		function outsideClick(event) {
 			if (!taskList[0].contains(event.target)) {
 				alert("Insert task first!");
@@ -106,10 +141,11 @@ $(document).ready(function () {
 				let $h3 = $("<h3></h3>");
 				$h3.text(inlineInput.val());
 				inlineInput.remove();
-				$(".btn-confirm").remove();
-				$(".btn-cancel").remove();
+				buttonGroup.remove();
+				// $(".btn-confirm").remove();
+				// $(".btn-cancel").remove();
 
-				taskList.find(".select-priority").after($h3);
+				taskList.find(".task__head").after($h3);
 
 				$(".add-button").prop("disabled", false);
 				$(".add-button").hover(
@@ -141,5 +177,24 @@ $(document).ready(function () {
 		whichTask(namaClass, dataLength, newBox);
 		event.stopPropagation();
 		checkPriority();
+	});
+
+	$(".three-dot-icon").on("click", function () {
+		let $parent = $(this).parents(".task_list");
+		let $edit_and_delete = $parent.find(".edit_and_delete");
+		let $dotIcon = $parent.find(".three-dot-icon");
+		let $dotContainer = $parent.find(".three-dot-container");
+
+		$dotIcon.addClass("active");
+		$edit_and_delete.removeClass("hidden");
+		console.log("fufufafa");
+		$(document).on("click.outside", function (event) {
+			if (!$edit_and_delete[0].contains(event.target)) {
+				$dotIcon.removeClass("active");
+				$edit_and_delete.addClass("hidden");
+
+				$(document).off("click.outside");
+			}
+		});
 	});
 });
