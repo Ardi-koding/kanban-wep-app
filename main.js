@@ -60,7 +60,7 @@ $(document).ready(function () {
 
 		// > edit_and_delete
 		let edit_and_delete = $("<div></div>");
-		edit_and_delete.addClass("edit-and-delete hidden");
+		edit_and_delete.addClass("edit_and_delete hidden");
 
 		let edit_btn = $("<button></button>");
 		edit_btn.addClass("edit-btn").text("Edit");
@@ -100,8 +100,8 @@ $(document).ready(function () {
 
 		inlineInput.focus();
 
+		$(".three-dot-icon").prop("disabled", true);
 		$(".add-button").prop("disabled", true);
-		$(".add-button").css("cursor", "not-allowed");
 		// Cegah interaksi di luar kotak
 		lockFocus(taskList, inlineInput, buttonGroup);
 	}
@@ -120,16 +120,13 @@ $(document).ready(function () {
 		taskList.find(".btn-cancel").on("click", function () {
 			taskList.fadeOut(300, function () {
 				$(this).remove();
+				$(".three-dot-icon").prop("disabled", false);
 				$(".add-button").prop("disabled", false);
-				$(".add-button").hover(
-					function () {
-						$(this).css("cursor", "pointer");
-					},
-					function () {
-						$(this).css("cursor", "default");
-					}
-				);
 				$(document).off("click.outside");
+			});
+			$(".add-button").hover(function () {
+				$(this).css("cursor", "default");
+				$(this).css("cursor", "pointer");
 			});
 		});
 
@@ -142,22 +139,17 @@ $(document).ready(function () {
 				$h3.text(inlineInput.val());
 				inlineInput.remove();
 				buttonGroup.remove();
-				// $(".btn-confirm").remove();
-				// $(".btn-cancel").remove();
 
 				taskList.find(".task__head").after($h3);
 
-				$(".add-button").prop("disabled", false);
-				$(".add-button").hover(
-					function () {
-						$(this).css("cursor", "pointer");
-					},
-					function () {
-						$(this).css("cursor", "default");
-					}
-				);
 				$(document).off("click.outside");
 			}
+			$(".three-dot-icon").prop("disabled", false);
+			$(".add-button").prop("disabled", false);
+			$(".add-button").hover(function () {
+				$(this).css("cursor", "default");
+				$(this).css("cursor", "pointer");
+			});
 		});
 	}
 
@@ -175,26 +167,31 @@ $(document).ready(function () {
 		let parent = $(this).parent();
 		let dataLength = Number(parent.children("[data-list]").length);
 		whichTask(namaClass, dataLength, newBox);
-		event.stopPropagation();
 		checkPriority();
+
+		event.stopPropagation();
 	});
 
-	$(".three-dot-icon").on("click", function () {
-		let $parent = $(this).parents(".task_list");
-		let $edit_and_delete = $parent.find(".edit_and_delete");
-		let $dotIcon = $parent.find(".three-dot-icon");
-		let $dotContainer = $parent.find(".three-dot-container");
+	$(".task").on("click", ".three-dot-icon", function (event) {
+		event.stopPropagation();
+		let $parentsSmall = $(this).parents(".task_list");
+		let $eAndDel = $parentsSmall.find(".edit_and_delete");
 
-		$dotIcon.addClass("active");
-		$edit_and_delete.removeClass("hidden");
-		console.log("fufufafa");
-		$(document).on("click.outside", function (event) {
-			if (!$edit_and_delete[0].contains(event.target)) {
-				$dotIcon.removeClass("active");
-				$edit_and_delete.addClass("hidden");
+		$eAndDel.toggleClass("hidden");
 
+		$(document).off("click.outside");
+		$(document).on("click.outside", function (e) {
+			if (
+				!$(e.target).closest(".three-dot-icon, .edit_and_delete").length
+			) {
+				$eAndDel.toggleClass("hidden");
 				$(document).off("click.outside");
 			}
+		});
+
+		$(".add-button").on("click", function () {
+			$(document).off("click.outside");
+			$eAndDel.addClass("hidden");
 		});
 	});
 });
