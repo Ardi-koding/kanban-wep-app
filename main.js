@@ -153,6 +153,59 @@ $(document).ready(function () {
 		});
 	}
 
+	let isEditing = false;
+	function lockEdit(
+		taskList,
+		inlineInput,
+		buttonGroup,
+		h3,
+		taskHead,
+		$originalValue
+	) {
+		isEditing = true;
+		function outsideClick(event) {
+			if (!$(event.target).closest(taskList).length && isEditing) {
+				alert("Edit Your Task!");
+				inlineInput.focus();
+				event.preventDefault();
+			}
+		}
+
+		$(document).on("click.outside", outsideClick);
+
+		taskList.find(".btn-cancel").on("click", function () {
+			h3.text($originalValue);
+			inlineInput.remove();
+			buttonGroup.remove();
+
+			taskHead.after(h3);
+
+			isEditing = false;
+			$(".three-dot-icon").prop("disabled", false);
+			$(".add-button").prop("disabled", false);
+			$(document).off("click.outside");
+		});
+
+		taskList.find(".btn-confirm").on("click", function () {
+			if (inlineInput.val() === "") {
+				alert("You can't leave an empty task!");
+				inlineInput.focus();
+			} else {
+				let $h3 = $("<h3></h3>");
+				$h3.text(inlineInput.val());
+				inlineInput.remove();
+				buttonGroup.remove();
+
+				taskList.find(".task__head").after($h3);
+
+				$(document).off("click.outside");
+			}
+			isEditing = false;
+			$(".three-dot-icon").prop("disabled", false);
+			$(".add-button").prop("disabled", false);
+		});
+	}
+
 	function whichTask(namaClass, dataLength, newBox) {
 		let $nextAttribute = namaClass + "-" + (dataLength + 1);
 		let $selector =
@@ -174,24 +227,73 @@ $(document).ready(function () {
 
 	$(".task").on("click", ".three-dot-icon", function (event) {
 		event.stopPropagation();
-		let $parentsSmall = $(this).parents(".task_list");
-		let $eAndDel = $parentsSmall.find(".edit_and_delete");
 
-		$eAndDel.toggleClass("hidden");
+		let $currentTask = $(this).parents(".task_list");
+		let $currentEditAndDelete = $currentTask.find(".edit_and_delete");
+		let $threeDot = $currentTask.find(".three-dot-icon");
+
+		$(".edit_and_delete").not($currentEditAndDelete).addClass("hidden");
+
+		$currentEditAndDelete.toggleClass("hidden");
 
 		$(document).off("click.outside");
 		$(document).on("click.outside", function (e) {
 			if (
-				!$(e.target).closest(".three-dot-icon, .edit_and_delete").length
+				!$(e.target).closest($currentEditAndDelete).length &&
+				!$(e.target).is($threeDot)
 			) {
-				$eAndDel.toggleClass("hidden");
+				$currentEditAndDelete.addClass("hidden");
 				$(document).off("click.outside");
 			}
 		});
 
 		$(".add-button").on("click", function () {
 			$(document).off("click.outside");
-			$eAndDel.addClass("hidden");
+			$currentEditAndDelete.addClass("hidden");
 		});
+	});
+
+	$(".task").on("click", ".edit-btn", function (event) {
+		event.stopPropagation();
+		let $parent = $(this).parents(".task_list");
+
+		let $currentEditAndDelete = $parent.find(".edit_and_delete");
+		$currentEditAndDelete.addClass("hidden");
+
+		let $h3 = $parent.find("h3");
+		let $taskHead = $parent.find(".task__head");
+
+		let $inlineInput = $("<input></input>")
+			.attr("type", "text")
+			.prop("required", true);
+		$inlineInput.addClass("inline-input");
+		$inlineInput.val($h3.text());
+
+		let $buttonGroup = $("<div></div>").addClass("add-task");
+		let $confirm = $("<button></button")
+			.text("Confirm")
+			.attr("type", "button")
+			.addClass("btn-confirm");
+		let $cancel = $("<button></button>")
+			.text("Cancel")
+			.attr("type", "button")
+			.addClass("btn-cancel ");
+		$buttonGroup.append($confirm, $cancel);
+
+		$taskHead.after($inlineInput, $buttonGroup);
+
+		let $originalValue = $h3.text();
+		$h3.remove();
+
+		lockEdit(
+			$parent,
+			$inlineInput,
+			$buttonGroup,
+			$h3,
+			$taskHead,
+			$originalValue
+		);
+		$(".add-button").prop("disabled", true);
+		$(".three-dot-icon").prop("disabled", true);
 	});
 });
