@@ -141,6 +141,8 @@ $(document).ready(function () {
 				buttonGroup.remove();
 
 				taskList.find(".task__head").after($h3);
+				let parent = taskList.parents("section");
+				updateDataAdd(parent);
 
 				$(document).off("click.outside");
 			}
@@ -153,7 +155,6 @@ $(document).ready(function () {
 		});
 	}
 
-	let isEditing = false;
 	function lockEdit(
 		taskList,
 		inlineInput,
@@ -162,9 +163,8 @@ $(document).ready(function () {
 		taskHead,
 		$originalValue
 	) {
-		isEditing = true;
 		function outsideClick(event) {
-			if (!$(event.target).closest(taskList).length && isEditing) {
+			if (!$(event.target).closest(taskList).length) {
 				alert("Edit Your Task!");
 				inlineInput.focus();
 				event.preventDefault();
@@ -213,6 +213,61 @@ $(document).ready(function () {
 				? $(`.${namaClass} > h2`)
 				: `[data-list="${namaClass}-${dataLength}"]`;
 		newBox($nextAttribute, $selector);
+	}
+
+	let toDo = [];
+	let inProgress = [];
+	let review = [];
+	let done = [];
+	function getData() {
+		let ip = document.querySelectorAll(".task_list");
+		ip.forEach((element) => {
+			data = element.dataset.list;
+			if (data.charAt(0) == "t") {
+				toDo.push(data);
+			} else if (data.charAt(0) == "i") {
+				inProgress.push(data);
+			} else if (data.charAt(0) == "r") {
+				review.push(data);
+			} else {
+				done.push(data);
+			}
+		});
+		console.log(toDo);
+		console.log(inProgress);
+		console.log(review);
+		console.log(done);
+	}
+	getData();
+
+	function updateDataAdd(parent) {
+		let parentElement = parent instanceof jQuery ? parent[0] : parent;
+		let ip = parentElement.querySelectorAll(".task_list");
+		console.log(ip);
+		ip.forEach((element) => {
+			data = element.dataset.list;
+			let number = Number(data.charAt(data.length - 1)) - 1;
+			let alreadyExist = inProgress[number];
+			console.log(alreadyExist);
+
+			if (data.charAt(0) == "t") {
+				toDo.push(data);
+				console.log(toDo);
+			} else if (data.charAt(0) == "i") {
+				if (data === alreadyExist) {
+					// do nothing
+				} else {
+					inProgress.push(data);
+					console.log(inProgress);
+				}
+			} else if (data.charAt(0) == "r") {
+				review.push(data);
+				console.log(review);
+			} else {
+				done.push(data);
+				console.log(done);
+			}
+		});
 	}
 
 	$(".add-button").on("click", function (event) {
@@ -295,5 +350,13 @@ $(document).ready(function () {
 		);
 		$(".add-button").prop("disabled", true);
 		$(".three-dot-icon").prop("disabled", true);
+	});
+
+	$(".task").on("click", ".delete-btn", function (event) {
+		event.stopPropagation();
+		let parents = $(this).parents(".task_list");
+		parents.fadeOut(300, function () {
+			parents.remove();
+		});
 	});
 });
