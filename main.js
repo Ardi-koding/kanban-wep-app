@@ -142,7 +142,9 @@ $(document).ready(function () {
 
 				taskList.find(".task__head").after($h3);
 				let parent = taskList.parents("section");
+				console.time();
 				updateDataAdd(parent);
+				console.timeEnd();
 
 				$(document).off("click.outside");
 			}
@@ -240,20 +242,28 @@ $(document).ready(function () {
 	}
 	getData();
 
+	console.time();
 	function updateDataAdd(parent) {
 		let parentElement = parent instanceof jQuery ? parent[0] : parent;
 		let ip = parentElement.querySelectorAll(".task_list");
 		console.log(ip);
+
 		ip.forEach((element) => {
 			data = element.dataset.list;
-			let number = Number(data.charAt(data.length - 1)) - 1;
-			let alreadyExist = inProgress[number];
-			console.log(alreadyExist);
+			console.log(data);
+			let number = Number(data.split("-").pop()) - 1;
+			let alreadyExist;
 
 			if (data.charAt(0) == "t") {
-				toDo.push(data);
-				console.log(toDo);
+				alreadyExist = toDo[number];
+				if (data === alreadyExist) {
+					// do nothing
+				} else {
+					toDo.push(data);
+					console.log(toDo);
+				}
 			} else if (data.charAt(0) == "i") {
+				alreadyExist = inProgress[number];
 				if (data === alreadyExist) {
 					// do nothing
 				} else {
@@ -261,13 +271,75 @@ $(document).ready(function () {
 					console.log(inProgress);
 				}
 			} else if (data.charAt(0) == "r") {
-				review.push(data);
-				console.log(review);
+				alreadyExist = review[number];
+				if (data === alreadyExist) {
+					// do nothing
+				} else {
+					toDo.push(data);
+					console.log(review);
+				}
 			} else {
-				done.push(data);
-				console.log(done);
+				alreadyExist = done[number];
+				if (data === alreadyExist) {
+					// do nothing
+				} else {
+					toDo.push(data);
+					console.log(done);
+				}
 			}
 		});
+	}
+	console.timeEnd();
+
+	function updateDataDelete(grandParent, deletedData) {
+		let gParent =
+			grandParent instanceof jQuery ? grandParent[0] : grandParent;
+
+		let task = gParent.querySelectorAll(".task_list");
+		let taskDataArray = [];
+		task.forEach((element) => {
+			taskDataArray.push(element.dataset.list);
+		});
+
+		let deletedDataIndex = taskDataArray.findIndex((element) => {
+			return element === deletedData;
+		});
+		taskDataArray = taskDataArray.filter((data) => {
+			return data !== deletedData;
+		});
+
+		for (
+			let index = deletedDataIndex;
+			index < taskDataArray.length;
+			index++
+		) {
+			let dataNumber = taskDataArray[index].split("-").pop();
+			dataNumber--;
+			let looseArrayValue = taskDataArray[index].split("-");
+			looseArrayValue[2] = dataNumber;
+			taskDataArray[index] = looseArrayValue.join("-");
+		}
+
+		task = [...task];
+		task.forEach((element) => {
+			let elementIndex = task.indexOf(element);
+			console.log(elementIndex);
+			console.log(deletedDataIndex);
+			let index;
+			if (elementIndex < deletedDataIndex) {
+				index = deletedDataIndex;
+				console.log(index);
+			} else {
+				element.dataset.list = taskDataArray[index];
+				console.log(taskDataArray[index]);
+				index++;
+			}
+		});
+		console.log(task);
+		console.log(deletedDataIndex);
+		console.log(taskDataArray);
+
+		// next is this!
 	}
 
 	$(".add-button").on("click", function (event) {
@@ -354,9 +426,14 @@ $(document).ready(function () {
 
 	$(".task").on("click", ".delete-btn", function (event) {
 		event.stopPropagation();
+		let grandParent = $(this).parents(".task");
 		let parents = $(this).parents(".task_list");
+		let deletedData = parents.data("list");
+
+		console.log(deletedData);
 		parents.fadeOut(300, function () {
 			parents.remove();
 		});
+		updateDataDelete(grandParent, deletedData);
 	});
 });
