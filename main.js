@@ -235,14 +235,9 @@ $(document).ready(function () {
 				done.push(data);
 			}
 		});
-		console.log(toDo);
-		console.log(inProgress);
-		console.log(review);
-		console.log(done);
 	}
 	getData();
 
-	console.time();
 	function updateDataAdd(parent) {
 		let parentElement = parent instanceof jQuery ? parent[0] : parent;
 		let ip = parentElement.querySelectorAll(".task_list");
@@ -289,7 +284,6 @@ $(document).ready(function () {
 			}
 		});
 	}
-	console.timeEnd();
 
 	function updateDataDelete(grandParent, deletedData) {
 		let gParent =
@@ -301,45 +295,34 @@ $(document).ready(function () {
 			taskDataArray.push(element.dataset.list);
 		});
 
+		let deletedDataNumber = Number(deletedData.split("-").pop());
+		deletedDataNumber++;
+
+		let looseDeletedData = deletedData.split("-");
+		looseDeletedData[2] = deletedDataNumber;
+		deletedData = looseDeletedData.join("-");
+
 		let deletedDataIndex = taskDataArray.findIndex((element) => {
 			return element === deletedData;
 		});
-		taskDataArray = taskDataArray.filter((data) => {
-			return data !== deletedData;
-		});
+		console.log(deletedDataIndex);
 
 		for (
 			let index = deletedDataIndex;
 			index < taskDataArray.length;
 			index++
 		) {
-			let dataNumber = taskDataArray[index].split("-").pop();
+			let dataNumber = Number(taskDataArray[index].split("-").pop());
 			dataNumber--;
 			let looseArrayValue = taskDataArray[index].split("-");
 			looseArrayValue[2] = dataNumber;
 			taskDataArray[index] = looseArrayValue.join("-");
+			task[index].dataset.list = taskDataArray[index];
+			// console.log(task[index]);
+			// console.log(taskDataArray[index]);
+			// console.log(task[index].dataset.list);
 		}
-
-		task = [...task];
-		task.forEach((element) => {
-			let elementIndex = task.indexOf(element);
-			console.log(elementIndex);
-			console.log(deletedDataIndex);
-			let index;
-			if (elementIndex < deletedDataIndex) {
-				index = deletedDataIndex;
-				console.log(index);
-			} else {
-				element.dataset.list = taskDataArray[index];
-				console.log(taskDataArray[index]);
-				index++;
-			}
-		});
-		console.log(task);
-		console.log(deletedDataIndex);
 		console.log(taskDataArray);
-
-		// next is this!
 	}
 
 	$(".add-button").on("click", function (event) {
@@ -430,10 +413,7 @@ $(document).ready(function () {
 		let parents = $(this).parents(".task_list");
 		let deletedData = parents.data("list");
 
-		console.log(deletedData);
-		parents.fadeOut(300, function () {
-			parents.remove();
-		});
+		parents.remove();
 		updateDataDelete(grandParent, deletedData);
 	});
 });
